@@ -50,7 +50,7 @@ public class Donation {
 
     public static void main(String[] args) {
 
-        Donor d1 = new Donor("Vasya Pupkin");
+        Donor d1 = new Donor("Ivan Ivanych");
         Charity c1 = new Charity("Red Cross", "Health");
 
         Donation donation1 = new Donation(450, d1, c1);
