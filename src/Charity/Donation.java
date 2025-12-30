@@ -1,63 +1,74 @@
 package Charity;
 
+import java.util.Objects;
+
 public class Donation {
     private static int id_gen = 0;
-    private int blood_id;
-    private double ml;
+    private final int donationId;
+    private Double ml;       // для крови
+    private Double money;    // для денег
     private Donor donor;
     private Charity charity;
 
-    public Donation() {
-        blood_id = id_gen++;
-    }
-
-    public Donation(double amount, Donor donor, Charity charity) {
-        this();
-        setMl(amount);
-        setDonor(donor);
-        setCharity(charity);
-    }
-
-    public int getBlood_id() {
-        return blood_id;
-    }
-
-    public double getMl() {
-        return ml;
-    }
-
-    public void setMl(double ml) {
-        if (ml > 0) {
-            this.ml = ml;
-        }
-    }
-
-    public Donor getDonor() {
-        return donor;
-    }
-
-    public void setDonor(Donor donor) {
+    public Donation(double ml, Donor donor, Charity charity) {
+        this.donationId = id_gen++;
+        this.ml = ml;
         this.donor = donor;
-    }
-
-    public Charity getCharity() {
-        return charity;
-    }
-
-    public void setCharity(Charity charity) {
         this.charity = charity;
     }
 
-    public static void main(String[] args) {
-
-        Donor d1 = new Donor("Ivan Ivanych");
-        Charity c1 = new Charity("Red Cross", "Health");
-
-        Donation donation1 = new Donation(450, d1, c1);
-
-        System.out.println("Donation ID: " + donation1.getBlood_id());
-        System.out.println("Amount (ml): " + donation1.getMl());
-        System.out.println("Donor: " + donation1.getDonor().getName());
-        System.out.println("Charity: " + donation1.getCharity().getName());
+    public Donation(Donor donor, Charity charity, double money) {
+        this.donationId = id_gen++;
+        this.money = money;
+        this.donor = donor;
+        this.charity = charity;
     }
+
+    public int getDonationId() { return donationId; }
+    public Double getMl() { return ml; }
+    public Double getMoney() { return money; }
+    public Donor getDonor() { return donor; }
+    public Charity getCharity() { return charity; }
+
+    @Override
+    public String toString() {
+        if (ml != null) {
+            return "Donation{" +
+                    "id=" + donationId +
+                    ", ml=" + ml +
+                    ", donor=" + donor.getName() +
+                    ", charity=" + charity.getName() +
+                    '}';
+        } else {
+            return "Donation{" +
+                    "id=" + donationId +
+                    ", money=" + money +
+                    ", donor=" + donor.getName() +
+                    ", charity=" + charity.getName() +
+                    '}';
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Donation)) return false;
+        Donation donation = (Donation) o;
+        return donationId == donation.donationId &&
+                Objects.equals(ml, donation.ml) &&
+                Objects.equals(money, donation.money) &&
+                Objects.equals(donor, donation.donor) &&
+                Objects.equals(charity, donation.charity);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(donationId, ml, money, donor, charity);
+    }
+    public double getAmountValue() {
+        if (money != null) return money;
+        if (ml != null) return ml;
+        return 0.0;
+    }
+
 }
