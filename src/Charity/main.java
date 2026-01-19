@@ -1,30 +1,68 @@
 package Charity;
 
-public class main {
+import java.sql.*;
+
+public class Main {
+
     public static void main(String[] args) {
-        Donor d1 = new Donor("Ivan Ivanych");
-        Donor d2 = new Donor("Vasya Pupkin");
-        Donor d3 = new Donor("Anatoliy Pirozhkov");
 
-        Charity c1 = new Charity("Red Cross", "Health");
-        Charity c2 = new Charity("GreenPeace", "Environment");
-        Charity c3 = new Charity("WWF", "Environment");
+        String url = "jdbc:postgresql://localhost:5432/charity_db";
+        String user = "postgres";
+        String password = "0000";
 
-        DonationPool pool = new DonationPool();
-        pool.addDonation(new Donation(450, d1, c1)); // кровь
-        pool.addDonation(new Donation(d2, c2, 1000)); // деньги
-        pool.addDonation(new Donation(d3, c3, 2000)); // деньги
+        Connection con = null;
+        Statement stmt = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
-        System.out.println("=== All donations ===");
-        pool.printAll();
+        try {
+            Class.forName("org.postgresql.Driver");
 
-        System.out.println("\n=== Filter by charity 'WWF' ===");
-        pool.filterByCharity("WWF").forEach(System.out::println);
+            con = DriverManager.getConnection(url, user, password);
 
-        System.out.println("\n=== Search by donor 'Anatoliy Pirozhkov' ===");
-        pool.searchByDonor("Anatoliy Pirozhkov").forEach(System.out::println);
+            ps = con.prepareStatement(
+                    "INSERT INTO donor(name) VALUES (?)"
+            );
+            ps.setString(1, "Ivan Ivanych");
+            ps.executeUpdate();
+            ps.close();
 
-        System.out.println("\n=== Sorted by amount of donation (ASC) ===");
-        pool.sortByAmount().forEach(System.out::println);
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM donor");
+
+            while (rs.next()) {
+                System.out.println(
+                        rs.getInt("id") + " " +
+                                rs.getString("name")
+                );
+            }
+            rs.close();
+            stmt.close();
+
+            ps = con.prepareStatement(
+                    "UPDATE donor SET name=? WHERE id=?"
+            );
+            ps.setString(1, "Ivan Updated");
+            ps.setInt(2, 1);
+            ps.executeUpdate();
+            ps.close();
+
+            ps = con.prepareStatement(
+                    "DELETE FROM donor WHERE id=?"
+            );
+            ps.setInt(1, 2);
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println(e);
+
+        } finally {
+            try {
+                if (ps != null) ps.close();
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
