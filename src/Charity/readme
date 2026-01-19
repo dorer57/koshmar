@@ -1,0 +1,80 @@
+# Charity Donation Platform
+
+## Description
+This is a code for a charity donation platform, which shows information about charity organisations, donors, and their donations.
+
+
+## Entities
+
+### Donor
+Represents a person who makes a donation
+
+### Charity
+Represents a charity organization
+
+### Donation
+Represents a donation made by a donor to a charity
+
+### DonationPool
+Stores and manages all donations
+Functions:
+- Add donations
+- Print all donations
+- Filter donations by charity
+- Search donations by donor
+- Sort donations by amount
+
+
+##  Instruction
+
+Input charity organisation names, donor names, amount and types of donations in main.java file. Program will automatically input them and then sort them.
+
+## Assignment task fulfilled:
+-this is a continuation of a project
+-follows data abstraction principle
+
+"public abstract class Entity {
+    private final int id;
+    private String name;
+}"
+
+-it sortrs output with a data pool, filtering, searching and sorting
+
+"DonationPool pool = new DonationPool();
+pool.filterByCharity("WWF")
+pool.searchByDonor("Anatoliy Pirozhkov")
+pool.sortByAmount()"
+
+-encapsulation, inheritance and polymorphism implemented
+
+"private String name;
+private int id;"
+
+"public String getName()
+public void setName(String name)"
+
+"public class Donor extends Entity
+public class Charity extends Entity"
+
+"System.out.println(entity);"
+
+-override toString (), equals (), hashCode () methods are used
+
+
+@Override
+public String toString() {
+    return getClass().getSimpleName() + "{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            '}';
+}
+
+
+@Override
+public boolean equals(Object o)
+
+
+@Override
+public int hashCode() {
+    return Objects.hash(id, name);
+}
