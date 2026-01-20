@@ -2,13 +2,13 @@ package Charity;
 
 import java.sql.*;
 
-public class Main {
+public class main {
 
     public static void main(String[] args) {
 
-        String url = "jdbc:postgresql://localhost:5432/charity_db";
-        String user = "postgres";
-        String password = "0000";
+        String url = "jdbc:postgresql://localhost:5433/pgrs";
+        String user = "pgrs";
+        String password = "pgrs";
 
         Connection con = null;
         Statement stmt = null;
